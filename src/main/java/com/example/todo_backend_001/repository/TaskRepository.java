@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 @Repository
 public class TaskRepository {
@@ -43,8 +44,24 @@ public class TaskRepository {
     }
     * */
 
-    public boolean updateSingleTask(Task task,int id){
-
+    public boolean updateSingleTask(Task current_task,int id){
+        Task task = new Task();
+        boolean find_success,success;
+        String find_query = "select * from taskTable where id = ?";
+        try{
+            task = jdbcTemplate.queryForObject(find_query, new TaskMapper(), id);
+            find_success = true;
+        }
+        catch(Exception e){
+            find_success = false;
+        }
+        if (find_success) {
+            jdbcTemplate.update("update taskTable set name=? where id = ?", current_task.getName(), id);
+            return success = true;
+        }
+        else{
+            return success = false;
+        }
     }
 
 
@@ -53,8 +70,17 @@ public class TaskRepository {
         // return all info of that row
         Task task = new Task();
         String sql = "select * from taskTable where id = ?";
-        task  = jdbcTemplate.queryForObject(sql, new TaskMapper(), id);
+        try{
+            task  = jdbcTemplate.queryForObject(sql, new TaskMapper(), id);
+        }
+        catch(Exception e){
+            System.out.println("EERORRRRRRRRRRRRRRRRRRRRR");
+        }
         return task;
     }
 
+//    @Query(value="Select * from emp" native=true);
+//    public List<Emply> getAllEmpjakHZA();
+//    @Query(value="Select * from emp where id=:n" native=true);
+//    public Emp getAllEmpjakHZA(@Prome("n"),Emp id);
 }

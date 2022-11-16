@@ -56,7 +56,6 @@ public class TaskController {
 
     @PutMapping("/update_single_task/{id}")
     public boolean updateTask(@RequestBody Task task,@PathVariable("id") int id){
-        boolean success;
         return taskRepository.updateSingleTask(task,id);
     }
 

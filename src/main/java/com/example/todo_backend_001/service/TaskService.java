@@ -1,12 +1,18 @@
 package com.example.todo_backend_001.service;
 import com.example.todo_backend_001.entity.Task;
+import com.example.todo_backend_001.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TaskService {
+//    public TaskService(TaskRepository taskRepository) {
+//        this.taskRepository = taskRepository;
+//    }
+
     public Task getTask(Task task){
         Task returnTask = new Task();
         returnTask.setId(task.getId());
@@ -53,8 +59,20 @@ public class TaskService {
 
         List<Task> returnAllInputtedTask = new ArrayList<>(tasks);
         return returnAllInputtedTask;
-    }
 
+    }
+   //private final TaskRepository taskRepository;
+//public Task getTaskByID(int id)
+//{
+//    Task task=taskRepository.getSingleTask(id);
+//    if(task)
+//    {
+//        taskRepository.updateSingleTask(hjasg)
+//    } throw new RuntimeException();
+////    else{
+////
+////    }
+//}
 
 
 }
