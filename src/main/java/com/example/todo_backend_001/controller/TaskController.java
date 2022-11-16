@@ -64,6 +64,11 @@ public class TaskController {
         return taskRepository.getSingleTask(id);
     }
 
+    @PutMapping("update_single_task_v2/{id}")
+    public boolean updateTask2(@RequestBody Task task,@PathVariable("id") int id){
+        return taskService.newUpdateSingleTaskbyID(task,id);
+    }
+
 
 
 }

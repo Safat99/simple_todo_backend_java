@@ -1,7 +1,9 @@
 package com.example.todo_backend_001.service;
 import com.example.todo_backend_001.entity.Task;
+import com.example.todo_backend_001.repository.TaskMapper;
 import com.example.todo_backend_001.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,11 +11,41 @@ import java.util.List;
 
 @Service
 public class TaskService {
-//    public TaskService(TaskRepository taskRepository) {
-//        this.taskRepository = taskRepository;
-//    }
+    private final TaskRepository taskRepository;
+    private final JdbcTemplate jdbcTemplate;
+
+    public TaskService(TaskRepository taskRepository, JdbcTemplate jdbcTemplate) {
+        this.taskRepository = taskRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public boolean newUpdateSingleTaskbyID(Task current_task, int id){
+        boolean findSuccess, updateSuccess;
+        Task task;
+        String find_query = "select * from taskTable where id = ?";
+        try{
+            task = jdbcTemplate.queryForObject(find_query, new TaskMapper(), id);
+            findSuccess = true;
+        }
+        catch(Exception e){
+            System.out.println("<<<<<<<<<<<<<<<<Error found>>>>>>>>>>>>>");
+            System.out.println(e.getMessage());
+            findSuccess = false;
+        }
+        if (findSuccess) {
+            taskRepository.newUpdateSingleTaskbyID(current_task.getName(),id);
+            return updateSuccess = true;
+        }
+        else{
+            return updateSuccess = false;
+        }
+    }
+
+
 
     public Task getTask(Task task){
+        // to experiment the post method
+        // just view the input
         Task returnTask = new Task();
         returnTask.setId(task.getId());
         returnTask.setDate(task.getDate());
@@ -23,9 +55,6 @@ public class TaskService {
         returnTask.setTimeNeeded(task.getTimeNeeded());
         return returnTask;
     }
-
-
-
 
     public List<Task> getAllTasks(){
         ArrayList<Task>  returnAllTasks= new ArrayList<>();
@@ -49,19 +78,18 @@ public class TaskService {
 //        returnAllTasks.add(task2);
 
         /* using rowMapper portion here*/
-        
-
 
         return returnAllTasks;
     }
 
     public List<Task> getAllInputtedTask(List<Task> tasks){
-
+        // to show all the inputted task that the frontend is going to print
+        // not a necessary api
         List<Task> returnAllInputtedTask = new ArrayList<>(tasks);
         return returnAllInputtedTask;
-
     }
-   //private final TaskRepository taskRepository;
+
+
 //public Task getTaskByID(int id)
 //{
 //    Task task=taskRepository.getSingleTask(id);

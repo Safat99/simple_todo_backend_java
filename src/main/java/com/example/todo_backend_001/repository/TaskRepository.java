@@ -53,6 +53,8 @@ public class TaskRepository {
             find_success = true;
         }
         catch(Exception e){
+            System.out.println("<<<<<<<<<<<<<<<<Error found>>>>>>>>>>>>>");
+            System.out.println(e.getMessage());
             find_success = false;
         }
         if (find_success) {
@@ -62,6 +64,10 @@ public class TaskRepository {
         else{
             return success = false;
         }
+    }
+
+    public void newUpdateSingleTaskbyID(String newName, int id){
+        jdbcTemplate.update("update taskTable set name=? where id=?",newName,id);
     }
 
 
